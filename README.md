@@ -11,3 +11,4 @@
 - Delete all elements from the list.
 - Get the size of the list.
 - Update the value at a specific index.
+- Sort elements in the list using QuickSort algorithm.
