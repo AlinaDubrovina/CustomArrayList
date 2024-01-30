@@ -2,27 +2,39 @@ package org.array_list;
 
 import java.util.NoSuchElementException;
 
-public class CustomArrayList<E> implements ICustomArrayList<E> {
-    private E[] values;
+/**
+ * CustomArrayList class is a simple implementation of a dynamic array.
+ * It provides methods for adding and removing elements.
+ *
+ * @param <T> the type of elements the array contains.
+ */
+public class CustomArrayList<T extends Comparable<T>>  implements ICustomArrayList<T>{
+    /**
+     * The internal array storing elements of type T.
+     */
+    private Object[] values;
 
+    /**
+     * Constructs an empty CustomArrayList.
+     */
     public CustomArrayList() {
-        values = (E[]) new Object[0];
+        values = new Object[0];
     }
 
     @Override
-    public void add(E element) {
+    public void add(Object element) {
         increaseCapacity();
         values[values.length - 1] = element;
     }
 
     @Override
-    public void add(int index, E element) {
+    public void add(int index, Object element) {
         if (index < 0 || index > values.length) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + values.length);
         }
 
-        E[] temp = values;
-        values = (E[]) new Object[temp.length + 1];
+        Object[] temp = values;
+        values = new Object[temp.length + 1];
 
         System.arraycopy(temp, 0, values, 0, index);
 
@@ -33,12 +45,12 @@ public class CustomArrayList<E> implements ICustomArrayList<E> {
     }
 
     @Override
-    public E get(int index) {
+    public Object get(int index) {
         return values[index];
     }
 
     @Override
-    public void deleteFirstOccurrence(E element) {
+    public void deleteFirstOccurrence(Object element) {
         int indexToDelete = -1;
 
         for (int i = 0; i < values.length; i++) {
@@ -49,8 +61,8 @@ public class CustomArrayList<E> implements ICustomArrayList<E> {
         }
 
         if (indexToDelete != -1) {
-            E[] temp = values;
-            values = (E[]) new Object[temp.length - 1];
+            Object[] temp = values;
+            values = new Object[temp.length - 1];
 
             System.arraycopy(temp, 0, values, 0, indexToDelete);
 
@@ -63,7 +75,7 @@ public class CustomArrayList<E> implements ICustomArrayList<E> {
 
     @Override
     public void deleteAll() {
-        values = (E[]) new Object[0];
+        values = new Object[0];
     }
 
     @Override
@@ -71,9 +83,17 @@ public class CustomArrayList<E> implements ICustomArrayList<E> {
         return values.length;
     }
 
+    @Override
+    public void updateValue(int index, Object newElement) {
+        values[index] = newElement;
+    }
+
+    /**
+     * Increases the capacity of the array by one, preserving existing elements.
+     */
     private void increaseCapacity() {
-        E[] temp = values;
-        values = (E[]) new Object[temp.length + 1];
+        Object[] temp = values;
+        values = new Object[temp.length + 1];
         System.arraycopy(temp, 0, values, 0, temp.length);
     }
 }
