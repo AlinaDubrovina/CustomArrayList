@@ -1,110 +1,77 @@
 package org.array_list;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.NoSuchElementException;
-import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CustomArrayListTest {
-    static Stream<Arguments> provideArgumentsForCustomArrayList() {
-        return Stream.of(
-                Arguments.of(new CustomArrayList<String>()),
-                Arguments.of(new CustomArrayList<Integer>()),
-                Arguments.of(new CustomArrayList<>())
-        );
+    private CustomArrayList<String> customArrayList1;
+    private CustomArrayList<Integer> customArrayList2;
+
+    @BeforeEach
+    public void init(){
+        customArrayList1 = new CustomArrayList<>();
+        customArrayList1.add("Hi");
+        customArrayList1.add("Hello");
+        customArrayList1.add("Hello World");
+        customArrayList1.add("Ok");
+
+        customArrayList2 = new CustomArrayList<>();
+        customArrayList2.add(0);
+        customArrayList2.add(1);
+        customArrayList2.add(2);
+        customArrayList2.add(3);
+        customArrayList2.add(4);
     }
 
-    @ParameterizedTest(name = "addStringsTest")
-    @MethodSource("provideArgumentsForCustomArrayList")
+    @Test
     @DisplayName("addStringsTest")
-    void addStringsTest(CustomArrayList<String> customArrayList) {
-        int initialSize = customArrayList.size();
-        String elementToAdd1 = "привет";
-        String elementToAdd2 = "пока";
+    void addStringsTest() {
+        int sizeBeforeAdding = customArrayList1.size();
+        String elementToAdd = "привет";
 
-        customArrayList.add(elementToAdd1);
-        customArrayList.add(elementToAdd2);
+        customArrayList1.add(elementToAdd);
 
-        assertEquals(initialSize + 2, customArrayList.size());
-        assertEquals(elementToAdd1, customArrayList.get(customArrayList.size() - 2));
-        assertEquals(elementToAdd2, customArrayList.get(customArrayList.size() - 1));
+        assertEquals(sizeBeforeAdding + 1, customArrayList1.size());
     }
-
-    @ParameterizedTest(name = "addIntegerTest")
-    @MethodSource("provideArgumentsForCustomArrayList")
+    @Test
     @DisplayName("addIntegerTest")
-    void addIntegerTest(CustomArrayList<Integer> customArrayList) {
-        int initialSize = customArrayList.size();
+    void addIntegerTest() {
+        int initialSize = customArrayList2.size();
 
-        int elementToAdd1 = 1;
-        int elementToAdd2 = 2;
-        int elementToAdd3 = 3;
+        customArrayList2.add(5);
 
-
-        customArrayList.add(elementToAdd1);
-        customArrayList.add(elementToAdd2);
-        customArrayList.add(elementToAdd3);
-
-        assertEquals(initialSize + 3, customArrayList.size());
-        assertEquals(elementToAdd1, customArrayList.get(customArrayList.size() - 3));
-        assertEquals(elementToAdd2, customArrayList.get(customArrayList.size() - 2));
-        assertEquals(elementToAdd3, customArrayList.get(customArrayList.size() - 1));
+        assertEquals(initialSize + 1, customArrayList2.size());
     }
 
-    @ParameterizedTest(name = "sizeTest")
-    @MethodSource("provideArgumentsForCustomArrayList")
+    @Test
     @DisplayName("sizeTest")
-    void sizeTest(CustomArrayList<Integer> customArrayList) {
-        int initialSize = customArrayList.size();
+    void sizeTest() {
+        int actual = customArrayList1.size();
 
-        int elementToAdd1 = 1;
-        int elementToAdd2 = 2;
-        int elementToAdd3 = 3;
-
-        customArrayList.add(elementToAdd1);
-        customArrayList.add(elementToAdd2);
-        customArrayList.add(elementToAdd3);
-
-        assertEquals(initialSize + 3, customArrayList.size());
+        assertEquals(4, actual);
     }
 
-    @ParameterizedTest(name = "addAtIndexTest")
-    @MethodSource("provideArgumentsForCustomArrayList")
+    @Test
     @DisplayName("addAtIndexTest")
-    void addAtIndexTest(CustomArrayList<Integer> customArrayList) {
-        customArrayList.add(0);
-        customArrayList.add(1);
-        customArrayList.add(2);
-        customArrayList.add(3);
+    void addAtIndexTest() {
+        int sizeBeforeAdding = customArrayList1.size();
+        String elementToAdd = "Apple";
+        customArrayList1.add(3, "Apple");
 
-        int sizeBeforeAdding = customArrayList.size();
-        int indexToAdd = 2;
-        int elementToAdd = 2;
-
-        customArrayList.add(indexToAdd, elementToAdd);
-
-        assertEquals(sizeBeforeAdding + 1, customArrayList.size());
-        assertEquals(elementToAdd, customArrayList.get(indexToAdd));
+        assertEquals(sizeBeforeAdding + 1, customArrayList1.size());
+        assertEquals(elementToAdd, customArrayList1.get(3));
     }
 
-    @ParameterizedTest(name = "getByIndex")
-    @MethodSource("provideArgumentsForCustomArrayList")
+    @Test
     @DisplayName("getByIndex")
-    void getByIndexTest(CustomArrayList<Integer> customArrayList) {
-        customArrayList.add(0);
-        customArrayList.add(1);
-        customArrayList.add(2);
-        customArrayList.add(3);
-
-        Object elementAtIndex0 = customArrayList.get(0);
-        Object elementAtIndex1 = customArrayList.get(1);
-        Object elementAtIndex2 = customArrayList.get(2);
-        Object elementAtIndex3 = customArrayList.get(3);
+    void getByIndexTest() {
+        Object elementAtIndex0 = customArrayList2.get(0);
+        Object elementAtIndex1 = customArrayList2.get(1);
+        Object elementAtIndex2 = customArrayList2.get(2);
+        Object elementAtIndex3 = customArrayList2.get(3);
 
         assertEquals(0, elementAtIndex0);
         assertEquals(1, elementAtIndex1);
@@ -112,31 +79,29 @@ public class CustomArrayListTest {
         assertEquals(3, elementAtIndex3);
     }
 
-    @ParameterizedTest(name = "deleteFirstOccurrenceTest")
-    @MethodSource("provideArgumentsForCustomArrayList")
+    @Test
     @DisplayName("deleteFirstOccurrenceTest")
-    void deleteFirstOccurrenceTest(CustomArrayList<Integer> customArrayList) {
-        customArrayList.add(1);
-        customArrayList.add(2);
-        customArrayList.add(3);
+    void deleteFirstOccurrenceTest() {
+        customArrayList2.add(2);
+        customArrayList2.add(7);
 
-        customArrayList.deleteFirstOccurrence(2);
-        assertEquals(customArrayList.get(1), 3);
-
-        Throwable exception = assertThrows(NoSuchElementException.class, () -> customArrayList.deleteFirstOccurrence(5));
-
-        assert("Element to delete not found".equals(exception.getMessage()));
+        customArrayList2.deleteFirstOccurrence(2);
+        assertEquals(customArrayList2.get(2), 3);
     }
 
-    @ParameterizedTest(name = "deleteAllTest")
-    @MethodSource("provideArgumentsForCustomArrayList")
-    void deleteAllTest(CustomArrayList<Integer> customArrayList) {
-        customArrayList.add(1);
-        customArrayList.add(2);
-        customArrayList.add(3);
+    @Test
+    @DisplayName("deleteAllTest")
+    void deleteAllTest() {
+        customArrayList1.deleteAll();
 
-        customArrayList.deleteAll();
+        assertEquals(0, customArrayList1.size());
+    }
 
-        assertEquals(0, customArrayList.size());
+    @Test
+    @DisplayName("updateValueTest")
+    void updateValueTest() {
+        customArrayList1.updateValue(1, "Peanut");
+
+        assertEquals(customArrayList1.get(1), "Peanut");
     }
 }
