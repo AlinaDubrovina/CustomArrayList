@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+// тесты норм, единственное, в следующий раз тести пограничные состояния
+// например как сортируется уже отсортированный массив? или если там 1 элемент?
 public class QuickSortTest {
     private QuickSort<String> quickSort1;
     private CustomArrayList<String> customArrayList1;

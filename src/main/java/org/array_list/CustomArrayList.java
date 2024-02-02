@@ -8,7 +8,9 @@ import java.util.NoSuchElementException;
  *
  * @param <T> the type of elements the array contains.
  */
-public class CustomArrayList<T extends Comparable<T>>  implements ICustomArrayList<T>{
+public class CustomArrayList<T extends Comparable<T>>  implements ICustomArrayList<T> {
+
+    private static final String OUT_OF_BOUND_ERR_MSG = "Index: %d, Size: %d";
     /**
      * The internal array storing elements of type T.
      */
@@ -30,7 +32,8 @@ public class CustomArrayList<T extends Comparable<T>>  implements ICustomArrayLi
     @Override
     public void add(int index, Object element) {
         if (index < 0 || index > values.length) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + values.length);
+            // подобного рода форматирование лучше делать через String.format + все текстовые сообщения выносим в статические константы
+            throw new IndexOutOfBoundsException(String.format(OUT_OF_BOUND_ERR_MSG, index, values.length));
         }
 
         Object[] temp = values;
@@ -46,15 +49,19 @@ public class CustomArrayList<T extends Comparable<T>>  implements ICustomArrayLi
 
     @Override
     public Object get(int index) {
-        return values[index];
+        return values[index]; // тут ведь тоже может быть IndexOutOfBoundsException, но это мелочи
     }
 
     @Override
     public void deleteFirstOccurrence(Object element) {
+        if (element == null) { //если нул то мы ничего не сможем удалить
+            return;
+        }
+
         int indexToDelete = -1;
 
         for (int i = 0; i < values.length; i++) {
-            if (values[i] != null && values[i].equals(element)) {
+            if (element.equals(values[i])) { // обрати внимание на то, что я вызываю equals на element и мне не надо проверять текущий элемент массива на нул
                 indexToDelete = i;
                 break;
             }
